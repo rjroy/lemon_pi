@@ -1,0 +1,77 @@
+{
+	"parameter" :
+	{
+		"firebog_type": "nocross",
+		"gravity" : "gravity.db"
+	},
+	"blacklist" : 
+	{
+		"regexs": "https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list",
+		"adlist": "https://v.firebog.net/hosts/lists.php?type={firebog_type}"
+	},
+	"path" :
+	{
+		"pihole" : "/etc/pihole"
+	},
+	"whitelist" :
+	{
+		"regexs" : {
+			"plex" : [
+				"(\\.|^)plexapp\\.com$",
+				"(\\.|^)plex\\.services$",
+				"(\\.|^)plex\\.bz$"
+			],
+			"general" : [
+				"(\\.|^)simplisafe\\.com$", 
+				"(\\.|^)clients[1-9]\\.google\\.com$",
+				"(\\.|^)mp\\.microsoft\\.com$"
+			],
+			"dev" : [
+				"(\\.|^)github\\.com$",
+				"(\\.|^)epicgames\\.com$",
+				"(\\.|^)epicgames\\.net$"
+			]
+		},
+		"exact": {
+			"phone" : [
+				"nextdoor.app.link", 
+				"itunes.apple.com", 
+				"s.mzstatic.com", 
+				"android.clients.google.com", 
+				"appleid.apple.com"
+			],
+			"game" : [
+				"plarium.com", 
+				"boardgamegeek.com",
+				"gfwsl.geforce.com" 
+			],
+			"networkmgmt" : [
+				"ping.ubnt.com"
+			],
+			"general" : [
+				"gravatar.com", 
+				"pool.ntp.org", 
+				"telemetry.malwarebytes.com",
+				"trace.svc.ui.com", 
+				"ui.com", 
+				"www.msftncsi.com", 
+				"s3.amazonaws.com", 
+				"settings-win.data.microsoft.com", 
+				"mirror1.malwaredomains.com", 
+				"sdk.split.io",
+				"makeupalley.com"
+			],
+			"plex" : [
+				"themoviedb.com"
+			]
+		}
+	},
+	"groups" :
+	{
+		"NetworkMgmt" : [ "for: v.firebog.net: all", "for: v.firebog.net: tick", "for: v.firebog.net: nocross", "networkmgmt" ],
+		"Default" : [ "general", "plex", "game" ],
+		"Phone" : [ "phone" ],
+		"Developer" : [ "dev", "phone" ]
+	}
+}
+
