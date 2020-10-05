@@ -7,7 +7,24 @@
 	"blacklist" : 
 	{
 		"regexs": "https://raw.githubusercontent.com/mmotti/pihole-regex/master/regex.list",
-		"adlist": "https://v.firebog.net/hosts/lists.php?type={firebog_type}"
+		"adlist": "https://v.firebog.net/hosts/lists.php?type={firebog_type}",
+		"custom" : 
+		{
+			"regexs" : {
+				"scam" : [
+					"(\\.|^)konduit\\.me$",
+					"(\\.|^)getgreenshot\\.org$",
+					"(\\.|^)delightcmain\\.xyz$",
+					"(\\.|^)allbestsecureus\\.com$",
+					"(\\.|^)webricks\\.cc$",
+					"(\\.|^)joinhoney\\.com$",
+					"(\\.|^)gladmpath\\.xyz$",
+					"(\\.|^)peachtrackerus\\.com$"
+				]
+			},
+			"exact" : {
+			}
+		}
 	},
 	"path" :
 	{
@@ -21,7 +38,19 @@
 				"(\\.|^)plex\\.services$",
 				"(\\.|^)plex\\.bz$"
 			],
+			"tv" : [
+				"(\\.|^)tvinteractive\\.tv$",
+				"(\\.|^)ngtv\\.io$",
+				"(\\.|^)conviva\\.com$",
+				"(\\.|^)hulu\\.com$",
+				"(\\.|^)api\\.hbo\\.com$",
+				"(\\.|^)samsungrm\\.net$",
+				"(\\.|^)samsungcloudcnd\\.com$",
+				"(\\.|^)samsungcloudsolutions\\.net$",
+				"(\\.|^)samsungcloudsolutions\\.com$"
+			],
 			"general" : [
+				"(\\.|^)galaxy1$", 
 				"(\\.|^)simplisafe\\.com$", 
 				"(\\.|^)clients[1-9]\\.google\\.com$",
 				"(\\.|^)mp\\.microsoft\\.com$"
@@ -30,6 +59,28 @@
 				"(\\.|^)github\\.com$",
 				"(\\.|^)epicgames\\.com$",
 				"(\\.|^)epicgames\\.net$"
+			],
+			"phone" : [
+				"(\\.|^)mas[a-z\\-]*\\.amazon\\.com$",
+				"(\\.|^)device-messaging[a-z\\-]*\\.amazon\\.com$"
+			],
+			"news" : [
+				"(\\.|^)buzzfeed\\.com$"
+			],
+			"podcasts" : [
+				"(\\.|^)tritondigital\\.com$"
+			],
+			"shopping" : [
+				"(\\.|^)unagi[a-z\\-]*\\.amazon\\.com$",
+				"(\\.|^)fls[a-z\\-]*\\.amazon\\.com$",
+				"(\\.|^)bazaarvoice\\.com$",
+				"(\\.|^)overstock\\.com$",
+				"(\\.|^)grocery\\.walmart\\.com$",
+				"(\\.|^)target\\.com$",
+				"(\\.|^)amazon-adsystem\\.com$",
+				"(\\.|^)cdn\\.segment\\.com$",
+				"(\\.|^)cdn\\.optimizely\\.com$",
+				"(\\.|^)www\\.googleadservices\\.com$"
 			]
 		},
 		"exact": {
@@ -63,6 +114,15 @@
 			],
 			"plex" : [
 				"themoviedb.com"
+			],
+			"podcasts" : [
+				"mobile.audible.com"
+			],
+			"shopping" : [
+				"dpm.demdex.net"
+			],
+			"tv" : [
+				"scribe.logs.roku.com"
 			]
 		}
 	},

@@ -9,14 +9,21 @@ class Config(object):
 	def __init__(self, firebog_type: str, cfg: dict):
 		self.firebog_type = firebog_type
 		self.url_regexs = cfg['blacklist']['regexs']
+		self.blocklist = cfg['blacklist']['custom']
 		self.url_adlist = cfg['blacklist']['adlist'].format(firebog_type=firebog_type)
 		self.path_pihole = cfg['path']['pihole']
 		self.path_pihole_db = os.path.join(self.path_pihole, cfg['parameter']['gravity'])
-		self.whitelist = cfg['whitelist']
+		self.allowlist = cfg['whitelist']
 		self.groups = cfg['groups']
 
 
 class PiHole(object):
+	class DomainType(object):
+		exact_allowlist = 0
+		exact_blocklist = 1
+		regex_allowlist = 2
+		regex_blocklist = 3
+
 	def __init__(self, cfg: Config, is_testing: bool = False):
 		self.cfg = cfg
 		self.__db = Database(self.cfg.path_pihole_db)
@@ -46,23 +53,34 @@ class PiHole(object):
 		if self.__valid:
 			print('[i] Updating Pi-hole')
 			subprocess.call(['pihole', '-up'])
+			print('[i] Updating cloudflared')
+			subprocess.call(['cloudflared', 'update'])
+			print('[i] Restart cloudflared')
+			subprocess.call(['systemctl', 'restart', 'cloudflared'])
 
 	def refresh(self):
 		if not self.__valid:
 			return False
 
 		updated_any = False
-		if self.__update_domain_list(3, self.__regexs.string_set, self.__regexs_comment):
+		if self.__update_domain_list(PiHole.DomainType.regex_blocklist, self.__regexs.string_set, self.__regexs_comment):
 			updated_any = True
-		if self.__update_domain_list(0, self.__adlist.host_set, f'for: {self.__adlist_comment}'):
+		if self.__update_domain_list(PiHole.DomainType.exact_allowlist, self.__adlist.host_set, f'for: {self.__adlist_comment}'):
 			updated_any = True
 			self.__update_adlist_list(self.__adlist.string_set, self.__adlist_comment)
 		
-		for comment,string_set in self.cfg.whitelist['regexs'].items():
-			if self.__update_domain_list(1, string_set, comment):
+		for comment,string_set in self.cfg.blocklist['regexs'].items():
+			if self.__update_domain_list(PiHole.DomainType.regex_blocklist, string_set, comment):
 				updated_any = True
-		for comment,string_set in self.cfg.whitelist['exact'].items():
-			if self.__update_domain_list(0, string_set, comment):
+		for comment,string_set in self.cfg.blocklist['exact'].items():
+			if self.__update_domain_list(PiHole.DomainType.exact_blocklist, string_set, comment):
+				updated_any = True
+
+		for comment,string_set in self.cfg.allowlist['regexs'].items():
+			if self.__update_domain_list(PiHole.DomainType.regex_allowlist, string_set, comment):
+				updated_any = True
+		for comment,string_set in self.cfg.allowlist['exact'].items():
+			if self.__update_domain_list(PiHole.DomainType.exact_allowlist, string_set, comment):
 				updated_any = True
 
 		if self.__update_groups(self.cfg.groups.keys(), 'Lemon Pi Groups'):
